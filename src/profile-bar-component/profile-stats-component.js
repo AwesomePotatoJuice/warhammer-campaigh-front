@@ -9,7 +9,7 @@ class ProfileStatsComponent extends React.Component {
     }
     render() {
         const position = {
-            backgroundColor: "rgba(8,0,57,0.46)",
+            backgroundColor: "rgba(151,151,151,0.74)",
             width: "150px",
             height: "100px",
             border: "dashed aquamarine",

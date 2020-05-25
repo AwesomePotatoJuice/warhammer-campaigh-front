@@ -1,21 +1,14 @@
 import React from "react";
+import BaseUnitComponent from "./base-unit-component";
 
 class HeavySupportComponent extends React.Component {
     constructor(props) {
         super(props)
     }
     render() {
-        const style = {
-            backgroundColor: "black",
-            width: "100px",
-            height: "100px",
-            border: "dashed aquamarine",
-            marginRight: "4px",
-            display: "inline-block",
-            color: "white"
-        };
         return (
-            <div style={style}>HeavySupport</div>
+            <BaseUnitComponent onChangePts={this.props.onChangePts} label={"Heavy-Support"} list={this.props.list}/>
+
         );
     }
 }

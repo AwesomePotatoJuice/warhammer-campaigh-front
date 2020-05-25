@@ -18,7 +18,7 @@ class nextPlayerComponent extends React.Component {
         const position = {
             backgroundColor: "black",
             width: "100px",
-            height: "100px",
+            height: "133px",
             border: "dashed aquamarine",
             marginRight: "4px",
             display: "inline-block",
@@ -30,6 +30,7 @@ class nextPlayerComponent extends React.Component {
         return (
             <div style={position}>
                 <div>Текущий игрок: {this.props.currentPlayer}</div>
+                <div>Текущий ход: {this.props.turnCounter}</div>
                 <Button onClick={this.onChangeNextPlayer}>
                     Следующий!
                 </Button>
