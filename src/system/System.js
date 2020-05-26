@@ -41,14 +41,14 @@ class System extends React.Component {
         };
 
         return (
-            <div>
-                <BaseShipComponent src={ChaosShip} top={"30%"} left={"34%"}/>
-                <BaseShipComponent src={BloodShip} top={"60%"} left={"75%"}/>
-                <BaseShipComponent src={MechShip} top={"15%"} left={"80%"}/>
+            <div style={this.props.style}>
+                <BaseShipComponent player={this.props.players.an} src={ChaosShip} top={"30%"} left={"34%"}/>
+                <BaseShipComponent player={this.props.players.al} src={BloodShip} top={"60%"} left={"75%"}/>
+                <BaseShipComponent player={this.props.players.nik} src={MechShip} top={"15%"} left={"80%"}/>
 
-                <BaseShipComponent scout={"true"} src={ChaosScoutShip} top={"26%"} left={"32%"}/>
-                <BaseShipComponent scout={"true"} src={BloodScoutShip} top={"56%"} left={"73%"}/>
-                <BaseShipComponent scout={"true"} src={MechScoutShip} top={"13%"} left={"77%"}/>
+                <BaseShipComponent player={this.props.players.an} scout={"true"} src={ChaosScoutShip} top={"26%"} left={"32%"}/>
+                <BaseShipComponent player={this.props.players.al} scout={"true"} src={BloodScoutShip} top={"56%"} left={"73%"}/>
+                <BaseShipComponent player={this.props.players.nik} scout={"true"} src={MechScoutShip} top={"13%"} left={"77%"}/>
 
                 <BasePlanetComponent src={Anerog} top={"17%"}/>
                 <BasePlanetComponent src={Canatt} top={"25%"}/>

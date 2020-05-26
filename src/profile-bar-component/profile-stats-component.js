@@ -4,10 +4,14 @@ import TextField from "@material-ui/core/TextField";
 class ProfileStatsComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.onChangeLimit = this.onChangeLimit.bind(this);
         this.onChangeFCP = this.onChangeFCP.bind(this);
     }
     render() {
+        let fcp = "";
+        let limitValue = "";
+        let maxLimit;
+        let delimiter;
+        let limit;
         const position = {
             backgroundColor: "rgba(151,151,151,0.74)",
             width: "150px",
@@ -17,18 +21,20 @@ class ProfileStatsComponent extends React.Component {
             display: "inline-block",
             color: "white"
         };
-        let statsLabel = "Limit " + this.props.stats.limit + "/" +this.props.stats.maxLimit;
-        let FCPLabel = "FCP  " + this.props.stats.FCP
+        if (this.props.stats) {
+            limit = this.props.stats.limit;
+            delimiter = "/";
+            maxLimit = this.props.stats.maxLimit;
+            limitValue = limit + delimiter + maxLimit;
+
+            fcp = this.props.stats.fcp;
+        }
         return (
             <div style={position}>
-                <TextField id="limit" onChange={this.onChangeLimit}  label={statsLabel} />
-                <TextField id="FCP" onChange={this.onChangeFCP} label={FCPLabel}/>
+                <TextField id="limit" disabled={true} label={"Limit"} value={limitValue}/>
+                <TextField id="FCP" onChange={this.onChangeFCP} value={fcp} label={"FCP"}/>
             </div>
         );
-    }
-
-    onChangeLimit(e) {
-        this.props.onChangeLimit(e.target.value);
     }
 
     onChangeFCP(e) {

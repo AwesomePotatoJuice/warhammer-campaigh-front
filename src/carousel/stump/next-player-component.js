@@ -17,8 +17,8 @@ class nextPlayerComponent extends React.Component {
     render() {
         const position = {
             backgroundColor: "black",
-            width: "100px",
-            height: "133px",
+            width: "133px",
+            height: "100px",
             border: "dashed aquamarine",
             marginRight: "4px",
             display: "inline-block",

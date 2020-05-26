@@ -12,9 +12,9 @@ import './App.css';
 const serverUrl = "http://localhost:8080"
 
 const players = {
-    an: "Андрей",
-    al: "Алексей",
-    nik: "Никита",
+    an: "Andrey",
+    al: "Alexei",
+    nik: "Nikita",
     full: "full"
 }
 
@@ -25,6 +25,8 @@ class App extends React.Component {
         this.bindAll();
     }
 
+
+
     handleNextPlayer(){
         this.setNextPlayer();
     }
@@ -34,20 +36,33 @@ class App extends React.Component {
     handleChangeFCP(newFCP){
         this.setFCP(this.state.currentPlayer, newFCP);
     }
+    handleChangeArmyList(newArmyList){
+        this.setFCP(this.state.currentPlayer, newArmyList);
+    }
     render() {
         const style = {
             backgroundColor: "#50006a",
             backgroundImage: `url(${BackgroundImage})`, backgroundRepeat: 'round',width:'100%',height:'966px',color:'white'
         };
+        const systemStyle = {
+            zIndex: "1",
+            position: "absolute",
+            height: "930px",
+            width: "100%"
+        };
+        const profileStyle = {
+            position: "relative",
+            zIndex: "2"
+        };
 
         return (
             <div style={style} className="App">
 
-                <ProfileBar onChangeTotalPts={this.handleChangeLimit} onChangeLimit={this.handleChangeLimit} onChangeFCP={this.handleChangeFCP} currentPlayerData={this.state.currentPlayerData}/>
+                <ProfileBar style={profileStyle} onChangeArmyList={this.handleChangeArmyList} onChangeTotalPts={this.handleChangeLimit} onChangeLimit={this.handleChangeLimit} onChangeFCP={this.handleChangeFCP} currentPlayerData={this.state.currentPlayerData}/>
 
                 <NextPlayer turnCounter={this.state.turnsCounter} onChangeNextPlayer={this.handleNextPlayer} currentPlayer={this.state.currentPlayer}/>
 
-                <System/>
+                <System style={systemStyle} players={players}/>
             </div>
         );
     }
@@ -60,13 +75,13 @@ class App extends React.Component {
     }
 
     setLimit(currentPlayer, newLimit) {
-         let playerData = this.getPlayerData(currentPlayer);
-         playerData.stats.limit = newLimit;
-         this.setPlayerData(currentPlayer, playerData);
+        let playerData = this.state.currentPlayerData ? this.state.currentPlayerData : this.getPlayerData(currentPlayer);
+        playerData.stats.limit = newLimit;
+        this.setPlayerData(currentPlayer, playerData);
     }
 
     setFCP(currentPlayer, newFCP) {
-        let playerData = this.getPlayerData(currentPlayer);
+        let playerData = this.state.currentPlayerData ? this.state.currentPlayerData : this.getPlayerData(currentPlayer);
         playerData.stats.FCP = newFCP;
         this.setPlayerData(currentPlayer, playerData);
     }
@@ -112,13 +127,14 @@ class App extends React.Component {
     }
 
     makeNextTurn() {
-        //TODO STUMP
+        this.setState({turnsCounter: +this.state.turnsCounter + 1})
     }
 
     bindAll() {
         this.handleChangeLimit = this.handleChangeLimit.bind(this);
         this.handleChangeFCP = this.handleChangeFCP.bind(this);
         this.handleNextPlayer = this.handleNextPlayer.bind(this);
+        this.handleChangeArmyList = this.handleChangeArmyList.bind(this);
     }
 
     initValues() {
