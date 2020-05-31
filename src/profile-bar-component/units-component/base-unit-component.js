@@ -8,21 +8,7 @@ class BaseUnitComponent extends React.Component {
         this.onChangePts = this.onChangePts.bind(this);
         this.onChangeSum = this.onChangeSum.bind(this);
         this.openModal = this.openModal.bind(this);
-        this.handleTextFieldChange11 = this.handleTextFieldChange11.bind(this);
-        this.handleTextFieldChange12 = this.handleTextFieldChange12.bind(this);
-        this.handleTextFieldChange13 = this.handleTextFieldChange13.bind(this);
-        this.handleTextFieldChange21 = this.handleTextFieldChange21.bind(this);
-        this.handleTextFieldChange22 = this.handleTextFieldChange22.bind(this);
-        this.handleTextFieldChange23 = this.handleTextFieldChange23.bind(this);
-        this.handleTextFieldChange31 = this.handleTextFieldChange31.bind(this);
-        this.handleTextFieldChange32 = this.handleTextFieldChange32.bind(this);
-        this.handleTextFieldChange33 = this.handleTextFieldChange33.bind(this);
-        this.handleTextFieldChange41 = this.handleTextFieldChange41.bind(this);
-        this.handleTextFieldChange42 = this.handleTextFieldChange42.bind(this);
-        this.handleTextFieldChange43 = this.handleTextFieldChange43.bind(this);
-        this.handleTextFieldChange51 = this.handleTextFieldChange51.bind(this);
-        this.handleTextFieldChange52 = this.handleTextFieldChange52.bind(this);
-        this.handleTextFieldChange53 = this.handleTextFieldChange53.bind(this);
+        this.bindAll();
         this.state = {display: "none",
             value11 :  "",value12 :  "",value13 :  "",
             value21 :  "",value22 :  "",value23 :  "",
@@ -31,6 +17,8 @@ class BaseUnitComponent extends React.Component {
             value51 :  "",value52 :  "",value53 :  "",
         }
     }
+
+
     render() {
         let pts = "";
         let sum = "";
@@ -69,7 +57,6 @@ class BaseUnitComponent extends React.Component {
                 display : this.state.display
             }
         }
-
 
         return (
             <div>
@@ -171,62 +158,86 @@ class BaseUnitComponent extends React.Component {
         }
 
     handleTextFieldChange11(e){
-        this.setState({value11: e.target.value11});
+        let listElement = this.props.list[0];
+        // listElement.
+        // this.props.onChangePts(this.props.list[0] = listElement)
+        this.setState({value11: e.target.value});
     }
 
     handleTextFieldChange12(e){
-        this.setState({value12: e.target.value12});
+        this.setState({value12: e.target.value});
     }
 
     handleTextFieldChange13(e){
-        this.setState({value13: e.target.value13});
+        this.setState({value13: e.target.value});
     }
 
     handleTextFieldChange21(e){
-        this.setState({value21: e.target.value21});
+        this.setState({value21: e.target.value});
     }
 
     handleTextFieldChange22(e){
-        this.setState({value22: e.target.value22});
+        this.setState({value22: e.target.value});
     }
     handleTextFieldChange23(e){
-        this.setState({value23: e.target.value23});
+        this.setState({value23: e.target.value});
     }
 
     handleTextFieldChange31(e){
-        this.setState({value31: e.target.value31});
+        this.setState({value31: e.target.value});
     }
 
     handleTextFieldChange32(e){
-        this.setState({value32: e.target.value32});
+        this.setState({value32: e.target.value});
     }
 
     handleTextFieldChange33(e){
-        this.setState({value33: e.target.value33});
+        this.setState({value33: e.target.value});
     }
 
     handleTextFieldChange41(e){
-        this.setState({value41: e.target.value41});
+        this.setState({value41: e.target.value});
     }
     handleTextFieldChange42(e){
-        this.setState({value42: e.target.value42});
+        this.setState({value42: e.target.value});
     }
 
     handleTextFieldChange43(e){
-        this.setState({value43: e.target.value43});
+        this.setState({value43: e.target.value});
     }
 
     handleTextFieldChange51(e){
-        this.setState({value51: e.target.value51});
+        this.setState({value51: e.target.value});
     }
 
     handleTextFieldChange52(e){
-        this.setState({value52: e.target.value52});
+        this.setState({value52: e.target.value});
     }
 
     handleTextFieldChange53(e){
-        this.setState({value53: e.target.value53});
+        this.setState({value53: e.target.value});
     }
+
+
+
+    bindAll() {
+        this.handleTextFieldChange11 = this.handleTextFieldChange11.bind(this);
+        this.handleTextFieldChange12 = this.handleTextFieldChange12.bind(this);
+        this.handleTextFieldChange13 = this.handleTextFieldChange13.bind(this);
+        this.handleTextFieldChange21 = this.handleTextFieldChange21.bind(this);
+        this.handleTextFieldChange22 = this.handleTextFieldChange22.bind(this);
+        this.handleTextFieldChange23 = this.handleTextFieldChange23.bind(this);
+        this.handleTextFieldChange31 = this.handleTextFieldChange31.bind(this);
+        this.handleTextFieldChange32 = this.handleTextFieldChange32.bind(this);
+        this.handleTextFieldChange33 = this.handleTextFieldChange33.bind(this);
+        this.handleTextFieldChange41 = this.handleTextFieldChange41.bind(this);
+        this.handleTextFieldChange42 = this.handleTextFieldChange42.bind(this);
+        this.handleTextFieldChange43 = this.handleTextFieldChange43.bind(this);
+        this.handleTextFieldChange51 = this.handleTextFieldChange51.bind(this);
+        this.handleTextFieldChange52 = this.handleTextFieldChange52.bind(this);
+        this.handleTextFieldChange53 = this.handleTextFieldChange53.bind(this);
+    }
+
 }
 export default BaseUnitComponent;
 
