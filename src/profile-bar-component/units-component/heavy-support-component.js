@@ -7,7 +7,7 @@ class HeavySupportComponent extends React.Component {
     }
     render() {
         return (
-            <BaseUnitComponent onChangePts={this.props.onChangePts} label={"Heavy-Support"} list={this.props.list}/>
+            <BaseUnitComponent onUnitChange={this.props.onUnitChange} label={"Heavy-Support"} list={this.props.list}/>
 
         );
     }

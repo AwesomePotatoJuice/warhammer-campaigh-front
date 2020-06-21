@@ -7,7 +7,7 @@ class TroopsComponent extends React.Component {
     }
     render() {
         return (
-            <BaseUnitComponent onChangePts={this.props.onChangePts} label={"Troops"} list={this.props.list}/>
+            <BaseUnitComponent onUnitChange={this.props.onUnitChange} label={"Troops"} list={this.props.list}/>
         );
     }
 }

@@ -7,7 +7,7 @@ class EliteComponent extends React.Component {
     }
     render() {
         return (
-            <BaseUnitComponent onChangePts={this.props.onChangePts} label={"Elite"} list={this.props.list}/>
+            <BaseUnitComponent onUnitChange={this.props.onUnitChange} label={"Elite"} list={this.props.list}/>
 
         );
     }

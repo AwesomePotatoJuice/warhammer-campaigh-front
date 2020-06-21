@@ -1,27 +1,71 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import Modal from "@material-ui/core/Modal";
+import BaseUnitRowComponent from "./base-unit-row-component";
+import Arrow from "../../img/arrow.svg"
+import Button from "@material-ui/core/Button";
+
 
 class BaseUnitComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.onChangePts = this.onChangePts.bind(this);
-        this.onChangeSum = this.onChangeSum.bind(this);
         this.openModal = this.openModal.bind(this);
-        this.bindAll();
-        this.state = {display: "none",
-            value11 :  "",value12 :  "",value13 :  "",
-            value21 :  "",value22 :  "",value23 :  "",
-            value31 :  "",value32 :  "",value33 :  "",
-            value41 :  "",value42 :  "",value43 :  "",
-            value51 :  "",value52 :  "",value53 :  "",
-        }
+
+        this.state = {unitList: this.props.list, display: "none", ptsSum: "", modelsSum: "", newUnit: {label:"", points:"", modelsCount:""}}
     }
 
+    componentDidMount() {
+        this.calculateStats();
+    }
+
+    calculateStats() {
+        let ptsSum = 0;
+        let modelsSum = 0;
+        this.state.unitList.forEach(unit => {
+            ptsSum += +unit.points;
+            modelsSum += +unit.modelsCount;
+        })
+        this.setState({ptsSum: ptsSum, modelsSum: modelsSum})
+
+        this.props.onUnitChange(this.state.unitList);
+    }
+
+    onPointsChange = (unitName, newPoints) => {
+        let unitList = this.state.unitList;
+        let findIndex = unitList.findIndex(unit => unit.label === unitName);
+        let newUnit = unitList[findIndex];
+        newUnit.points = newPoints;
+        unitList[findIndex] = newUnit;
+        this.setState({unitList: unitList})
+        this.calculateStats();
+    }
+    onCountChange = (unitName, newModelsCount) => {
+        let unitList = this.state.unitList;
+        let findIndex = unitList.findIndex(unit => unit.label === unitName);
+        let newUnit = unitList[findIndex];
+        newUnit.modelsCount = newModelsCount;
+        unitList[findIndex] = newUnit;
+        this.setState({unitList: unitList})
+        this.calculateStats();
+    }
+    onLabelChange = (unitName, newModelName) => {
+        let unitList = this.state.unitList;
+        let findIndex = unitList.findIndex(unit => unit.label === unitName);
+        let newUnit = unitList[findIndex];
+        newUnit.label = newModelName;
+        unitList[findIndex] = newUnit;
+        this.setState({unitList: unitList})
+        this.calculateStats();
+    }
+
+    onDeleteUnit = (unitLabel) => {
+        let unitList = this.state.unitList;
+        let findIndex = unitList.findIndex(unit => unit.label === unitLabel);
+        unitList.splice(findIndex, 1)
+        this.setState({unitList: unitList})
+        this.calculateStats();
+    }
 
     render() {
-        let pts = "";
-        let sum = "";
         const style = {
             backgroundColor: "rgba(151,151,151,0.74)",
             width: "200px",
@@ -31,10 +75,11 @@ class BaseUnitComponent extends React.Component {
             display: "flex",
             color: "white"
         };
+        let calculatedHeight = (163 + +this.state.unitList.length * 126).toString().concat("px");
         const styleWindow = {
             backgroundColor: "rgb(151,151,151)",
             width: "194px",
-            height: "568px",
+            height: {calculatedHeight},
             border: "dashed aquamarine",
             marginRight: "4px",
             flexWrap: "wrap",
@@ -42,20 +87,15 @@ class BaseUnitComponent extends React.Component {
             position: "relative",
             display: this.state.display
         };
-        const minWidth = {
-            minWidth: "186px"
+        const rotate = {
+            transform:"rotate(225.5deg)",
+            width:'35px',
+            height:'40px',
+            marginLeft: "auto",
+            marginRight: "auto"
         }
-
-        let list = this.props.list;
-        if(list) {
-            this.state = {
-                value11: list[0] ? list[0].label : "", value12: list[0] ? list[0].points : "", value13: list[0] ? list[0].modelsCount : "",
-                value21: list[1] ? list[1].label : "", value22: list[1] ? list[1].points : "", value23: list[1] ? list[1].modelsCount : "",
-                value31: list[2] ? list[2].label : "", value32: list[2] ? list[2].points : "", value33: list[2] ? list[2].modelsCount : "",
-                value41: list[3] ? list[3].label : "", value42: list[3] ? list[3].points : "", value43: list[3] ? list[3].modelsCount : "",
-                value51: list[4] ? list[4].label : "", value52: list[4] ? list[4].points : "", value53: list[4] ? list[4].modelsCount : "",
-                display : this.state.display
-            }
+        const imgPosition = {
+            marginTop: "-47px"
         }
 
         return (
@@ -63,62 +103,41 @@ class BaseUnitComponent extends React.Component {
                 <table onClick={this.openModal} style={style}>
                     <thead><tr><th rowSpan={2}>{this.props.label}</th></tr></thead>
                     <tbody>
-                        <tr><td><TextField id="sum" disabled={true} onChange={this.onChangeSum} value={sum} label={"Models"}/></td>
-                            <td><TextField id="pts" disabled={true} onChange={this.onChangePts} value={pts} label={"Pts"}/></td>
+                        <tr>
+                            <td><TextField id="pts" disabled={true} value={this.state.ptsSum} label={"Pts"}/></td>
+                            <td><TextField id="sum" disabled={true} value={this.state.modelsSum} label={"Models"}/></td>
                         </tr>
                     </tbody>
                 </table>
+                <div onClick={this.openModal} style={imgPosition}>
+                    <img style={rotate} src={Arrow} alt={"arrow"} width="70%" height="70%"/>
+                </div>
                 <div style={styleWindow}>
                     {this.props.label} content
                     <table>
                         <tbody>
-                        <tr>
-                            <td colSpan={"2"}><TextField style={minWidth} onChange={this.handleTextFieldChange11} label={"unit"} value={this.state.value11}/></td>
-                            <td/>
-                            </tr><tr>
-                            <td><TextField onChange={this.handleTextFieldChange12} label={"pts"} value={this.state.value12}/></td>
-                            <td><TextField onChange={this.handleTextFieldChange13} label={"count"} value={this.state.value13}/></td>
-                        </tr>
+                        {this.state.unitList.map((unit, index)=> {
+                             return   <BaseUnitRowComponent onDeleteUnit={this.onDeleteUnit} onLabelChange={this.onLabelChange} onPointsChange={this.onPointsChange} onCountChange={this.onCountChange} key={unit.label} unit={unit} index={index}/>
+                            }
+                        )}
                         </tbody>
                     </table>
                     <table>
+                        <thead>
+                            <tr>
+                                <td>Edit first</td>
+                                <td><Button onClick={this.addUnit}>Add</Button ></td>
+                            </tr>
+                        </thead>
                         <tbody>
-                        <tr><td colSpan={"2"}><TextField onChange={this.handleTextFieldChange21} label={"unit"} value={this.state.value21}/></td>
-                            <td/>
-                            </tr><tr>
-                            <td><TextField onChange={this.handleTextFieldChange22} label={"pts"} value={this.state.value22}/></td>
-                            <td><TextField onChange={this.handleTextFieldChange23} label={"count"} value={this.state.value23}/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                        <tr><td colSpan={"2"}><TextField onChange={this.handleTextFieldChange31} label={"unit"} value={this.state.value31}/></td>
-                            <td/>
-                        </tr><tr>
-                            <td><TextField onChange={this.handleTextFieldChange32} label={"pts"} value={this.state.value32}/></td>
-                            <td><TextField onChange={this.handleTextFieldChange33} label={"count"} value={this.state.value33}/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                        <tr><td colSpan={"2"}><TextField onChange={this.handleTextFieldChange41} label={"unit"} value={this.state.value41}/></td>
-                            <td/>
-                        </tr><tr>
-                            <td><TextField onChange={this.handleTextFieldChange42} label={"pts"} value={this.state.value42}/></td>
-                            <td><TextField onChange={this.handleTextFieldChange43} label={"count"} value={this.state.value43}/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                        <tr><td colSpan={"2"}><TextField onChange={this.handleTextFieldChange51} label={"unit"} value={this.state.value51}/></td>
-                            <td/>
-                        </tr><tr>
-                            <td><TextField onChange={this.handleTextFieldChange52} label={"pts"} value={this.state.value52}/></td>
-                            <td><TextField onChange={this.handleTextFieldChange53} label={"count"} value={this.state.value53}/></td>
-                        </tr>
+                            <tr>
+                                <td colSpan={"2"}><TextField onChange={this.handleLabelChange} label={"unit"} value={this.state.newUnit.label}/></td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td><TextField onChange={this.handlePointsChange} label={"pts"} value={this.state.newUnit.points}/></td>
+                                <td><TextField onChange={this.handleCountChange} label={"count"} value={this.state.newUnit.modelsCount}/></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -126,28 +145,35 @@ class BaseUnitComponent extends React.Component {
         );
     }
 
-    getSum(list) {
-        let sum = 0;
-        list.forEach(unit =>{
-            sum += +unit.modelsCount;
-        })
-        return sum;
+    addUnit = (e) => {
+        if(this.checkNewUnitIsFilled()){
+        let unitList = this.state.unitList;
+        unitList.push(this.state.newUnit)
+        this.setState({newUnit: {label:"", points:"", modelsCount:""}})
+        this.setState({unitList: unitList})
+        this.calculateStats();
+        }else
+            alert("FILL ME COMPLETELY")
+
+    }
+    checkNewUnitIsFilled = (e) => {
+        return this.state.newUnit.label && this.state.newUnit.modelsCount && this.state.newUnit.points
     }
 
-    getPts(list) {
-        let pts = 0;
-        list.forEach(unit =>{
-            pts += +unit.points;
-        })
-        return pts;
+    handleLabelChange = (e) => {
+        let newUnit = this.state.newUnit;
+        newUnit.label = e.target.value
+        this.setState({newUnit: {...newUnit}})
     }
-
-    onChangePts(e) {
-        this.props.onChangePts(e.target.value);
+    handlePointsChange = (e) => {
+        let newUnit = this.state.newUnit;
+        newUnit.points = e.target.value
+        this.setState({newUnit: {...newUnit}})
     }
-
-    onChangeSum(e) {
-        this.props.onChangeFCP(e.target.value);
+    handleCountChange = (e) => {
+        let newUnit = this.state.newUnit;
+        newUnit.modelsCount = e.target.value
+        this.setState({newUnit: {...newUnit}})
     }
 
     openModal() {
@@ -156,87 +182,6 @@ class BaseUnitComponent extends React.Component {
         if(this.state.display === "none")
             this.setState({display: ""})
         }
-
-    handleTextFieldChange11(e){
-        let listElement = this.props.list[0];
-        // listElement.
-        // this.props.onChangePts(this.props.list[0] = listElement)
-        this.setState({value11: e.target.value});
-    }
-
-    handleTextFieldChange12(e){
-        this.setState({value12: e.target.value});
-    }
-
-    handleTextFieldChange13(e){
-        this.setState({value13: e.target.value});
-    }
-
-    handleTextFieldChange21(e){
-        this.setState({value21: e.target.value});
-    }
-
-    handleTextFieldChange22(e){
-        this.setState({value22: e.target.value});
-    }
-    handleTextFieldChange23(e){
-        this.setState({value23: e.target.value});
-    }
-
-    handleTextFieldChange31(e){
-        this.setState({value31: e.target.value});
-    }
-
-    handleTextFieldChange32(e){
-        this.setState({value32: e.target.value});
-    }
-
-    handleTextFieldChange33(e){
-        this.setState({value33: e.target.value});
-    }
-
-    handleTextFieldChange41(e){
-        this.setState({value41: e.target.value});
-    }
-    handleTextFieldChange42(e){
-        this.setState({value42: e.target.value});
-    }
-
-    handleTextFieldChange43(e){
-        this.setState({value43: e.target.value});
-    }
-
-    handleTextFieldChange51(e){
-        this.setState({value51: e.target.value});
-    }
-
-    handleTextFieldChange52(e){
-        this.setState({value52: e.target.value});
-    }
-
-    handleTextFieldChange53(e){
-        this.setState({value53: e.target.value});
-    }
-
-
-
-    bindAll() {
-        this.handleTextFieldChange11 = this.handleTextFieldChange11.bind(this);
-        this.handleTextFieldChange12 = this.handleTextFieldChange12.bind(this);
-        this.handleTextFieldChange13 = this.handleTextFieldChange13.bind(this);
-        this.handleTextFieldChange21 = this.handleTextFieldChange21.bind(this);
-        this.handleTextFieldChange22 = this.handleTextFieldChange22.bind(this);
-        this.handleTextFieldChange23 = this.handleTextFieldChange23.bind(this);
-        this.handleTextFieldChange31 = this.handleTextFieldChange31.bind(this);
-        this.handleTextFieldChange32 = this.handleTextFieldChange32.bind(this);
-        this.handleTextFieldChange33 = this.handleTextFieldChange33.bind(this);
-        this.handleTextFieldChange41 = this.handleTextFieldChange41.bind(this);
-        this.handleTextFieldChange42 = this.handleTextFieldChange42.bind(this);
-        this.handleTextFieldChange43 = this.handleTextFieldChange43.bind(this);
-        this.handleTextFieldChange51 = this.handleTextFieldChange51.bind(this);
-        this.handleTextFieldChange52 = this.handleTextFieldChange52.bind(this);
-        this.handleTextFieldChange53 = this.handleTextFieldChange53.bind(this);
-    }
 
 }
 export default BaseUnitComponent;

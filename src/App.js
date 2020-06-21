@@ -21,11 +21,16 @@ const players = {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentPlayer: players.an, turnsCounter: 1, currentPlayerData: this.getPlayerData(players.an)}
+        this.state = {currentPlayer: players.an, turnsCounter: 1, currentPlayerData: ""}
         this.bindAll();
     }
 
-
+    componentDidMount() {
+        Axios.get(serverUrl + "/getData?player=" + players.an, {headers: {"x-dsi-restful":1}})
+            .then((response)=>{
+                this.setState({currentPlayerData : response.data});
+            })
+    }
 
     handleNextPlayer(){
         this.setNextPlayer();
@@ -37,7 +42,7 @@ class App extends React.Component {
         this.setFCP(this.state.currentPlayer, newFCP);
     }
     handleChangeArmyList(newArmyList){
-        this.setFCP(this.state.currentPlayer, newArmyList);
+        this.setArmyList(newArmyList)
     }
     render() {
         const style = {
@@ -57,11 +62,15 @@ class App extends React.Component {
 
         return (
             <div style={style} className="App">
-
-                <ProfileBar style={profileStyle} onChangeArmyList={this.handleChangeArmyList} onChangeTotalPts={this.handleChangeLimit} onChangeLimit={this.handleChangeLimit} onChangeFCP={this.handleChangeFCP} currentPlayerData={this.state.currentPlayerData}/>
-
-                <NextPlayer turnCounter={this.state.turnsCounter} onChangeNextPlayer={this.handleNextPlayer} currentPlayer={this.state.currentPlayer}/>
-
+                {this.state.currentPlayerData &&
+                <ProfileBar style={profileStyle} onChangeArmyList={this.handleChangeArmyList}
+                            onChangeTotalPts={this.handleChangeLimit} onChangeLimit={this.handleChangeLimit}
+                            onChangeFCP={this.handleChangeFCP} currentPlayerData={this.state.currentPlayerData}/>
+                }
+                {this.state.turnsCounter && this.state.currentPlayer &&
+                    <NextPlayer turnCounter={this.state.turnsCounter} onChangeNextPlayer={this.handleNextPlayer}
+                                currentPlayer={this.state.currentPlayer}/>
+                }
                 <System style={systemStyle} players={players}/>
             </div>
         );
@@ -86,17 +95,28 @@ class App extends React.Component {
         this.setPlayerData(currentPlayer, playerData);
     }
 
+    setArmyList(newArmyList){
+        let currentPlayerData = this.state.currentPlayerData;
+        // if(currentPlayerData.armyList !== newArmyList){
+            currentPlayerData.armyList = newArmyList
+            this.setPlayerData(this.state.currentPlayer, currentPlayerData)
+        // }
+    }
+
     setPlayerData(currentPlayer, playerData) {
         //TODO STUMP
+        Axios.post(serverUrl + "/setData?player=" + currentPlayer, playerData)
+            .then((response)=>{
+            })
         switch (currentPlayer) {
             case players.an:
-                sampleChaosSM = playerData;
+                // sampleChaosSM = playerData;
                 break;
             case players.al:
-                sampleBlood = playerData;
+                // sampleBlood = playerData;
                 break;
             case players.nik:
-                sampleAdMech = playerData;
+                // sampleAdMech = playerData;
                 break;
             default:
         }
@@ -141,30 +161,5 @@ class App extends React.Component {
         this.getPlayerData(players.full)
     }
 }
-
-let sampleChaosSM = {stats: {limit: 300,
-    maxLimit: 600, FCP: 4},
-    armyList:{HQ: [{label: "Sample label HQ CHAOS", points: 110, modelsCount: 1},{label: "Sample label HQ 2", points: 20, modelsCount: 2}],
-        troops:[{label: "Sample label troops", points: 50, modelsCount: 10}, {label: "Sample label troops 2", points: 60, modelsCount: 5}],
-        elites:[{label: "213", points: "", modelsCount: ""}],
-        heavySupport:[{label: "", points: "", modelsCount: ""}],
-        fastAttack:[{label: "", points: "", modelsCount: ""}],
-        dedicatedTransport:[{label: "", points: "", modelsCount: ""}]}}
-let sampleBlood = {stats: {limit: 333,
-        maxLimit: 600, FCP: 4},
-    armyList:{HQ: [{label: "Sample label HQ BLOOD", points: 110, modelsCount: 1},{label: "Sample label HQ 2", points: 520, modelsCount: 2}],
-        troops:[{label: "Sample label troops", points: 50, modelsCount: 10}, {label: "Sample label troops 2", points: 60, modelsCount: 5}],
-    elites:[{label: "", points: "", modelsCount: ""}],
-    heavySupport:[{label: "", points: "", modelsCount: ""}],
-    fastAttack:[{label: "", points: "", modelsCount: ""}],
-    dedicatedTransport:[{label: "", points: "", modelsCount: ""}]}}
-let sampleAdMech = {stats: {limit: 555,
-        maxLimit: 600, FCP: 4},
-    armyList:{HQ: [{label: "Sample label HQ ADMECH", points: 110, modelsCount: 1},{label: "Sample label HQ 2", points: 1020, modelsCount: 2}],
-        troops:[{label: "Sample label troops", points: 50, modelsCount: 10}, {label: "Sample label troops 2", points: 60, modelsCount: 5}],
-    elites:[{label: "", points: "", modelsCount: ""}],
-    heavySupport:[{label: "", points: "", modelsCount: ""}],
-    fastAttack:[{label: "", points: "", modelsCount: ""}],
-    dedicatedTransport:[{label: "", points: "", modelsCount: ""}]}}
 
 export default App;

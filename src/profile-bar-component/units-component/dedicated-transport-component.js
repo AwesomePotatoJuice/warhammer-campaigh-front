@@ -7,7 +7,7 @@ class DedicatedTransportComponent extends React.Component {
     }
     render() {
         return (
-            <BaseUnitComponent onChangePts={this.props.onChangePts} label={"Dedicated Transport"} list={this.props.list}/>
+            <BaseUnitComponent onUnitChange={this.props.onUnitChange} label={"Dedicated Transport"} list={this.props.list}/>
         );
     }
 }

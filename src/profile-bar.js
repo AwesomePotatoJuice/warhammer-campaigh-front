@@ -5,15 +5,9 @@ import Units from "./profile-bar-component/units-component.js"
 class profileBar extends React.Component {
     constructor(props) {
         super(props);
+        this.state={stats: this.props.currentPlayerData.stats, armyList: this.props.currentPlayerData.armyList}
     }
     render() {
-        let playerData = this.props.currentPlayerData;
-        let stats;
-        let armyList;
-        if(playerData) {
-            stats = this.props.currentPlayerData.stats;
-            armyList = this.props.currentPlayerData.armyList;
-        }
         const barPosition = {
             position: "absolute",
             left: "0px",
@@ -27,10 +21,18 @@ class profileBar extends React.Component {
         };
         return (
             <div style={barPosition}>
-                <Stats onChangeFCP={this.props.onChangeFCP} stats={stats}/>
-                <Units onChangeLimit={this.props.onChangeLimit} stats={stats} armyList={armyList}/>
+                <Stats onChangeFCP={this.props.onChangeFCP} stats={this.state.stats}/>
+                <Units onChangeArmy={this.onChangeArmy} onChangeLimit={this.handleChangeLimit} armyList={this.state.armyList}/>
             </div>
         );
+    }
+    handleChangeLimit = (newPtsSum) => {
+        let stats = this.state.stats;
+        stats.limit = newPtsSum;
+        this.setState({stats: stats})
+    }
+    onChangeArmy = (armyList) =>{
+        this.props.onChangeArmyList(armyList);
     }
 }
 export default profileBar;

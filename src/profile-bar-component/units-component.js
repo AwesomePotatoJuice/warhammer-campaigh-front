@@ -10,144 +10,82 @@ import DedicatedTransport from "./units-component/dedicated-transport-component.
 class UnitsComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.bindAll();
+        this.state = ({list: this.props.armyList, ptsSum: 0})
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let ptsSum = 0;
+        this.state.list.hq.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        this.state.list.troops.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        this.state.list.elites.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        this.state.list.heavySupport.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        this.state.list.fastAttack.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        this.state.list.dedicatedTransport.forEach(units =>{
+            ptsSum += +units.points;
+        })
+        if(prevState.ptsSum !== ptsSum){
+            this.props.onChangeLimit(ptsSum)
+            this.props.onChangeArmy(this.state.list)
+            this.setState({ptsSum: ptsSum})
+        }
+    }
     render() {
-        let dedicatedTransport;
-        let fastAttack;
-        let heavySupport;
-        let elites;
-        let troops;
-        let hq;
-        let list = this.props.armyList;
         const style = {
             display: "flex",
             flexDirection: "row"
         };
-        if (list) {
-            hq = list.hq;
-            troops = list.troops;
-            elites = list.elites;
-            heavySupport = list.heavySupport;
-            fastAttack = list.fastAttack;
-            dedicatedTransport = list.dedicatedTransport;
-        }
         return (
             <div style={style}>
-                <HQ onChangePts={this.onChangePtsHQ} list={hq}/>
-                <Troops onChangePts={this.onChangePtsTroops} list={troops}/>
-                <Elite onChangePts={this.onChangePtsElites} list={elites}/>
-                <HeavySupport onChangePts={this.onChangePtsHeavy} list={heavySupport}/>
-                <FastAttack onChangePts={this.onChangePtsFast} list={fastAttack}/>
-                <DedicatedTransport onChangePts={this.onChangePtsTransport} list={dedicatedTransport}/>
+                <HQ onUnitChange={this.onChangeHQ} list={this.state.list.hq}/>
+                <Troops onUnitChange={this.onChangeTroops} list={this.state.list.troops}/>
+                <Elite onUnitChange={this.onChangeElites} list={this.state.list.elites}/>
+                <HeavySupport onUnitChange={this.onChangeHeavy} list={this.state.list.heavySupport}/>
+                <FastAttack onUnitChange={this.onChangeFast} list={this.state.list.fastAttack}/>
+                <DedicatedTransport onUnitChange={this.onChangeTransport} list={this.state.list.dedicatedTransport}/>
             </div>
         );
     }
-    onChangeModelsHQ(pts){}
-    onChangePtsHQ(pts){
-        this.setState({hq: pts});
-        let totalSum = this.getTotalSum("hq", pts);
-        this.onChangeLimit(totalSum);
+    onChangeHQ = (unit) => {
+        let list = this.state.list;
+        list.hq = unit
+        this.setState({list: list});
     }
-    onChangePtsTroops(pts){
-        this.setState({troops: pts});
-        let totalSum = this.getTotalSum("troops", pts);
-        this.onChangeLimit(totalSum);
+    onChangeTroops = (unit) => {
+        let list = this.state.list;
+        list.troops = unit
+        this.setState({list: list});
     }
-    onChangePtsElites(pts){
-        this.setState({elites: pts});
-        let totalSum = this.getTotalSum("elites", pts);
-        this.onChangeLimit(totalSum);
+    onChangeElites = (unit) => {
+        let list = this.state.list;
+        list.elites = unit
+        this.setState({list: list});
     }
-    onChangePtsHeavy(pts){
-        this.setState({heavy: pts});
-        let totalSum = this.getTotalSum("heavy", pts);
-        this.onChangeLimit(totalSum);
+    onChangeHeavy = (unit) => {
+        let list = this.state.list;
+        list.heavySupport = unit
+        this.setState({list: list});
     }
-    onChangePtsFast(pts){
-        this.setState({fast: pts});
-        let totalSum = this.getTotalSum("fast", pts);
-        this.onChangeLimit(totalSum);
+    onChangeFast = (unit) => {
+        let list = this.state.list;
+        list.fastAttack = unit
+        this.setState({list: list});
     }
-    onChangePtsTransport(pts){
-        this.setState({transport: pts});
-        let totalSum = this.getTotalSum("transport", pts);
-        this.onChangeLimit(totalSum);
-    }
-
-    onChangeLimit(e){
-        this.props.onChangeLimit(e);
+    onChangeTransport = (unit) => {
+        let list = this.state.list;
+        list.dedicatedTransport = unit
+        this.setState({list: list});
     }
 
-    getTotalSum(changed, newPts) {
-        switch (changed) {
-            case "hq":
-                return +newPts +
-                    + +this.state.troops
-                    + +this.state.elites
-                    + +this.state.heavy
-                    + +this.state.fast
-                    + +this.state.transport;
-            case "troops":
-                return +this.state.hq +
-                    + +newPts
-                    + +this.state.elites
-                    + +this.state.heavy
-                    + +this.state.fast
-                    + +this.state.transport;
-            case "elites":
-                return +this.state.hq +
-                    + +this.state.troops
-                    + +newPts
-                    + +this.state.heavy
-                    + +this.state.fast
-                    + +this.state.transport;
-            case "heavy":
-                return +this.state.hq +
-                    + +this.state.troops
-                    + +this.state.elites
-                    + +newPts
-                    + +this.state.fast
-                    + +this.state.transport;
-            case "fast":
-                return +this.state.hq +
-                    + +this.state.troops
-                    + +this.state.elites
-                    + +this.state.heavy
-                    + +newPts
-                    + +this.state.transport;
-            case "transport":
-                return +this.state.hq +
-                    + +this.state.troops
-                    + +this.state.elites
-                    + +this.state.heavy
-                    + +this.state.fast
-                    + +newPts;
-            default: return 0;
-        }
-    }
-
-    getPts(list) {
-        let pts = 0;
-        if(list && list.size)
-        list.forEach(unit =>{
-            pts += unit.points;
-        })
-        return pts;
-    }
-
-
-
-    bindAll() {
-        this.onChangeLimit = this.onChangeLimit.bind(this);
-        this.onChangePtsHQ = this.onChangePtsHQ.bind(this);
-        this.onChangePtsTroops = this.onChangePtsTroops.bind(this);
-        this.onChangePtsElites = this.onChangePtsElites.bind(this);
-        this.onChangePtsHeavy = this.onChangePtsHeavy.bind(this);
-        this.onChangePtsFast = this.onChangePtsFast.bind(this);
-        this.onChangePtsTransport = this.onChangePtsTransport.bind(this);
-    }
 }
 export default UnitsComponent;
 

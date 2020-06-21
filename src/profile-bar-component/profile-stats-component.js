@@ -7,11 +7,6 @@ class ProfileStatsComponent extends React.Component {
         this.onChangeFCP = this.onChangeFCP.bind(this);
     }
     render() {
-        let fcp = "";
-        let limitValue = "";
-        let maxLimit;
-        let delimiter;
-        let limit;
         const position = {
             backgroundColor: "rgba(151,151,151,0.74)",
             width: "150px",
@@ -21,18 +16,10 @@ class ProfileStatsComponent extends React.Component {
             display: "inline-block",
             color: "white"
         };
-        if (this.props.stats) {
-            limit = this.props.stats.limit;
-            delimiter = "/";
-            maxLimit = this.props.stats.maxLimit;
-            limitValue = limit + delimiter + maxLimit;
-
-            fcp = this.props.stats.fcp;
-        }
         return (
             <div style={position}>
-                <TextField id="limit" disabled={true} label={"Limit"} value={limitValue}/>
-                <TextField id="FCP" onChange={this.onChangeFCP} value={fcp} label={"FCP"}/>
+                <TextField id="limit" disabled={true} label={"Limit"} value={this.props.stats.limit}/>
+                <TextField id="FCP" onChange={this.onChangeFCP} value={this.props.stats.fcp} label={"FCP"}/>
             </div>
         );
     }

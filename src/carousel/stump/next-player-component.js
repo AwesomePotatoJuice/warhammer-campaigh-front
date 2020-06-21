@@ -25,7 +25,8 @@ class nextPlayerComponent extends React.Component {
             color: "white",
             position: "absolute",
             right: "0px",
-            marginBottom: "10px"
+            marginBottom: "10px",
+            zIndex:"100"
         };
         return (
             <div style={position}>
