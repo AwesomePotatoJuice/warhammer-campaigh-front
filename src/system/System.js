@@ -24,6 +24,8 @@ import Rannari from "../img/planets/Rannari mini.png"
 
 import Danadat from "../img/planets/Danadat mini.png"
 
+import CanvasComponent from "./system-objects/canvas-component";
+
 class System extends React.Component {
     constructor(props){
         super(props)
@@ -42,6 +44,7 @@ class System extends React.Component {
 
         return (
             <div style={this.props.style}>
+                <CanvasComponent/>
                 <BaseShipComponent player={this.props.players.an} src={ChaosShip} top={"30%"} left={"34%"}/>
                 <BaseShipComponent player={this.props.players.al} src={BloodShip} top={"60%"} left={"75%"}/>
                 <BaseShipComponent player={this.props.players.nik} src={MechShip} top={"15%"} left={"80%"}/>
