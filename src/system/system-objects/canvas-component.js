@@ -12,12 +12,16 @@ class CanvasComponent extends React.Component {
         let position = canvas.getBoundingClientRect();
         if (canvas.getContext) {
             let ctx = canvas.getContext('2d');
-            this.drawEllipseWithEllipse(ctx, position.left, position.top, 100, 30, 'red');
+            // this.drawEllipseWithEllipse(ctx, 130, 100, 100, 60, 'red');
+            let rx = 1;
+            let ry = 1;
+            this.drawEllipseWithEllipse(ctx, position.width/2, position.height/2, rx, ry, 'red');
         }
     }
 
     drawEllipseWithEllipse(ctx, cx, cy, rx, ry, style) {
         if (ctx.ellipse) {
+            ctx.imageSmoothingEnabled = true;
             ctx.save();
             ctx.beginPath();
             ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
@@ -38,7 +42,7 @@ class CanvasComponent extends React.Component {
             height: "930px"
         }
         return (
-            <canvas ref={this.canvas} style={canvasStyle}/>
+            <canvas ref={this.canvas} width={"1903px"} height={"930px"}/>
         );
 
     }
