@@ -147,6 +147,8 @@ class App extends React.Component {
     }
 
     makeNextTurn() {
+        this.movePlanets()
+        this.moveShips()
         this.setState({turnsCounter: +this.state.turnsCounter + 1})
     }
 
@@ -159,6 +161,10 @@ class App extends React.Component {
 
     initValues() {
         this.getPlayerData(players.full)
+    }
+
+    movePlanets() {
+
     }
 }
 

@@ -58,7 +58,7 @@ class System extends React.Component {
                 <BasePlanetComponent src={Galyan} top={"33%"}/>
                 <BasePlanetComponent src={Genar} top={"41%"}/>
                 <BasePlanetComponent src={Mustan} top={"61%"}/>
-                <BasePlanetComponent src={XAE12 } top={"69%"}/>
+                <BasePlanetComponent src={XAE12} top={"69%"}/>
                 <BasePlanetComponent src={Teslin} top={"77%"}/>
                 <BasePlanetComponent src={Prisus} top={"85%"}/>
                 <BasePlanetComponent src={Rannari} top={"93%"}/>
